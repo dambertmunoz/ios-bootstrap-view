@@ -202,7 +202,7 @@ struct NavigationShowcaseView: View {
                         title: "Home",
                         displayMode: .large,
                         leadingItems: [.init(icon: "line.3.horizontal", action: {})],
-                        trailingActions: [
+                        trailingItems: [
                             .init(icon: "magnifyingglass", action: {}),
                             .init(icon: "bell", action: {})
                         ]

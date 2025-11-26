@@ -62,14 +62,16 @@ struct HomeView: View {
 
     private var statsSection: some View {
         BSCard(variant: .filled) {
-            HStack(spacing: theme.lg) {
-                StatItem(value: "8", label: "Atoms", icon: "atom")
+            HStack(spacing: theme.md) {
+                StatItem(value: "11", label: "Atoms", icon: "atom")
                 Divider().frame(height: 40)
-                StatItem(value: "6", label: "Molecules", icon: "diamond")
+                StatItem(value: "10", label: "Molecules", icon: "diamond")
                 Divider().frame(height: 40)
-                StatItem(value: "4", label: "Organisms", icon: "square.stack.3d.up")
+                StatItem(value: "6", label: "Organisms", icon: "square.stack.3d.up")
                 Divider().frame(height: 40)
-                StatItem(value: "3", label: "Templates", icon: "rectangle.3.group")
+                StatItem(value: "5", label: "Templates", icon: "rectangle.3.group")
+                Divider().frame(height: 40)
+                StatItem(value: "16", label: "Themes", icon: "paintpalette")
             }
             .frame(maxWidth: .infinity)
         }
@@ -84,42 +86,52 @@ struct HomeView: View {
             VStack(spacing: theme.sm) {
                 CategoryCard(
                     title: "Atoms",
-                    description: "Basic building blocks like buttons, text, icons",
+                    description: "Basic building blocks: buttons, text, icons, chips, ratings",
                     icon: "atom",
                     color: .blue,
-                    count: 8
+                    count: 11
                 ) {
                     navigation.selectedTab = .atoms
                 }
 
                 CategoryCard(
                     title: "Molecules",
-                    description: "Combinations of atoms like cards, inputs",
+                    description: "Combinations: cards, inputs, charts, FAB, steps",
                     icon: "diamond.fill",
                     color: .purple,
-                    count: 6
+                    count: 10
                 ) {
                     navigation.selectedTab = .molecules
                 }
 
                 CategoryCard(
                     title: "Organisms",
-                    description: "Complex components like forms, navigation",
+                    description: "Complex: forms, navigation, swipe cards",
                     icon: "square.stack.3d.up.fill",
                     color: .orange,
-                    count: 4
+                    count: 6
                 ) {
                     navigation.selectedTab = .organisms
                 }
 
                 CategoryCard(
                     title: "Templates",
-                    description: "Page layouts and structures",
+                    description: "Page layouts, onboarding, and structures",
                     icon: "rectangle.3.group.fill",
                     color: .green,
-                    count: 3
+                    count: 5
                 ) {
                     navigation.selectedTab = .templates
+                }
+
+                CategoryCard(
+                    title: "Extras",
+                    description: "E-commerce, social, chat, themes & more",
+                    icon: "sparkles",
+                    color: .pink,
+                    count: 12
+                ) {
+                    navigation.selectedTab = .extras
                 }
             }
         }

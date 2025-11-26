@@ -28,6 +28,9 @@ struct RootView: View {
 
                 TemplatesShowcaseView()
                     .tag(NavigationState.Tab.templates)
+
+                ExtrasShowcaseView()
+                    .tag(NavigationState.Tab.extras)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
 

@@ -51,6 +51,7 @@ final class NavigationState: ObservableObject {
         case molecules = "Molecules"
         case organisms = "Organisms"
         case templates = "Templates"
+        case extras = "Extras"
 
         var id: String { rawValue }
 
@@ -61,6 +62,7 @@ final class NavigationState: ObservableObject {
             case .molecules: return "diamond"
             case .organisms: return "square.stack.3d.up"
             case .templates: return "rectangle.3.group"
+            case .extras: return "sparkles"
             }
         }
 
@@ -71,6 +73,7 @@ final class NavigationState: ObservableObject {
             case .molecules: return "diamond.fill"
             case .organisms: return "square.stack.3d.up.fill"
             case .templates: return "rectangle.3.group.fill"
+            case .extras: return "sparkles"
             }
         }
     }

@@ -91,6 +91,84 @@ struct ExtrasShowcaseView: View {
                         ChatShowcaseView()
                     }
 
+                    // Interactive Components
+                    BSSectionHeader("Interactive Components")
+
+                    ComponentLinkCard(
+                        title: "BSSlider",
+                        description: "Range sliders and discrete selection",
+                        icon: "slider.horizontal.3"
+                    ) {
+                        SliderShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSDropdown",
+                        description: "Dropdown selects with search",
+                        icon: "chevron.down.circle.fill"
+                    ) {
+                        DropdownShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSSegmentedControl",
+                        description: "Segmented controls and tabs",
+                        icon: "square.split.2x1.fill"
+                    ) {
+                        SegmentedControlShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSAccordion",
+                        description: "Expandable sections and FAQs",
+                        icon: "list.bullet.indent"
+                    ) {
+                        AccordionShowcaseView()
+                    }
+
+                    // Layout Components
+                    BSSectionHeader("Layout Components")
+
+                    ComponentLinkCard(
+                        title: "BSBottomSheet",
+                        description: "Bottom sheet modals",
+                        icon: "rectangle.bottomhalf.inset.filled"
+                    ) {
+                        BottomSheetShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSCarousel",
+                        description: "Image and content carousels",
+                        icon: "photo.stack.fill"
+                    ) {
+                        CarouselShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSTimeline",
+                        description: "Timeline and activity feeds",
+                        icon: "timeline.selection"
+                    ) {
+                        TimelineShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSEmptyState",
+                        description: "Empty state and error views",
+                        icon: "tray"
+                    ) {
+                        EmptyStateShowcaseView()
+                    }
+
+                    ComponentLinkCard(
+                        title: "BSProgressBar",
+                        description: "Progress indicators and spinners",
+                        icon: "chart.bar.fill"
+                    ) {
+                        ProgressBarShowcaseView()
+                    }
+
                     // Customization
                     BSSectionHeader("Customization")
 
@@ -1051,6 +1129,465 @@ struct SampleCard: BSSwipeCardData {
     let id: String
     let title: String
     let color: Color
+}
+
+// MARK: - Slider Showcase
+
+struct SliderShowcaseView: View {
+    @State private var sliderValue: Double = 50
+    @State private var lowerValue: Double = 20
+    @State private var upperValue: Double = 80
+    @State private var discreteSelection = "Medium"
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Basic Slider") {
+                    VStack(spacing: theme.md) {
+                        BSSlider(value: $sliderValue, showValue: true)
+                        BSText("Value: \(Int(sliderValue))", style: .caption1, color: .secondary)
+                    }
+                }
+
+                ShowcaseSection(title: "Gradient Slider") {
+                    BSSlider(
+                        value: $sliderValue,
+                        style: .gradient(colors: [.blue, .purple, .pink]),
+                        showValue: true
+                    )
+                }
+
+                ShowcaseSection(title: "Range Slider") {
+                    BSRangeSlider(
+                        lowerValue: $lowerValue,
+                        upperValue: $upperValue
+                    )
+                }
+
+                ShowcaseSection(title: "Labeled Slider") {
+                    BSLabeledSlider(
+                        value: $sliderValue,
+                        minLabel: "0",
+                        maxLabel: "100"
+                    )
+                }
+
+                ShowcaseSection(title: "Discrete Slider") {
+                    BSDiscreteSlider(
+                        selection: $discreteSelection,
+                        options: ["Small", "Medium", "Large", "XL"],
+                        labelProvider: { $0 }
+                    )
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSSlider")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Dropdown Showcase
+
+struct DropdownShowcaseView: View {
+    @State private var selectedOption: String? = nil
+    @State private var selectedOptions: Set<String> = []
+    @Environment(\.theme) var theme
+
+    let options = ["Swift", "Kotlin", "Java", "Python", "JavaScript", "TypeScript", "Rust", "Go"]
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Basic Dropdown") {
+                    BSDropdown(
+                        selection: $selectedOption,
+                        options: options,
+                        labelProvider: { $0 },
+                        placeholder: "Select a language"
+                    )
+                }
+
+                ShowcaseSection(title: "Searchable Dropdown") {
+                    BSDropdown(
+                        selection: $selectedOption,
+                        options: options,
+                        labelProvider: { $0 },
+                        placeholder: "Search languages...",
+                        icon: "magnifyingglass",
+                        isSearchable: true
+                    )
+                }
+
+                ShowcaseSection(title: "Multi-Select Dropdown") {
+                    BSMultiDropdown(
+                        selection: $selectedOptions,
+                        options: options,
+                        labelProvider: { $0 },
+                        placeholder: "Select languages",
+                        isSearchable: true
+                    )
+                }
+
+                if let selected = selectedOption {
+                    BSText("Selected: \(selected)", style: .caption1, color: .secondary)
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSDropdown")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Segmented Control Showcase
+
+struct SegmentedControlShowcaseView: View {
+    @State private var selectedTab1 = "First"
+    @State private var selectedTab2 = "A"
+    @State private var selectedTab3 = "Tab 1"
+    @State private var selectedView = 0
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Filled Style") {
+                    BSSegmentedControl(
+                        selection: $selectedTab1,
+                        options: ["First", "Second", "Third"]
+                    )
+                }
+
+                ShowcaseSection(title: "Outlined Style") {
+                    BSSegmentedControl(
+                        selection: $selectedTab2,
+                        options: ["A", "B", "C"],
+                        style: .outlined
+                    )
+                }
+
+                ShowcaseSection(title: "Underlined Style") {
+                    BSSegmentedControl(
+                        selection: $selectedTab3,
+                        options: ["Tab 1", "Tab 2", "Tab 3"],
+                        style: .underlined
+                    )
+                }
+
+                ShowcaseSection(title: "Pill Style") {
+                    BSSegmentedControl(
+                        selection: $selectedTab1,
+                        options: ["One", "Two", "Three"],
+                        style: .pill
+                    )
+                }
+
+                ShowcaseSection(title: "Icon Segmented") {
+                    BSIconSegmentedControl(
+                        selection: $selectedView,
+                        options: [
+                            (0, "list.bullet", "List"),
+                            (1, "square.grid.2x2", "Grid"),
+                            (2, "map", "Map")
+                        ]
+                    )
+                }
+
+                ShowcaseSection(title: "Tab Style") {
+                    BSTabSegmentedControl(
+                        selection: $selectedTab1,
+                        tabs: [
+                            .init(id: "First", title: "All", icon: "tray.full"),
+                            .init(id: "Second", title: "Unread", icon: "envelope.badge", badge: 5),
+                            .init(id: "Third", title: "Starred", icon: "star")
+                        ]
+                    )
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSSegmentedControl")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Accordion Showcase
+
+struct AccordionShowcaseView: View {
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Expandable Section") {
+                    BSExpandableSection(title: "Section Title", icon: "star.fill") {
+                        BSText("This is the expandable content. It can contain any SwiftUI views.")
+                    }
+                }
+
+                ShowcaseSection(title: "Collapsible Card") {
+                    BSCollapsibleCard(title: "Card Title", icon: "folder.fill", badge: "3") {
+                        VStack(alignment: .leading, spacing: theme.sm) {
+                            BSText("Item 1")
+                            BSText("Item 2")
+                            BSText("Item 3")
+                        }
+                    }
+                }
+
+                ShowcaseSection(title: "FAQ Accordion") {
+                    BSFAQAccordion(faqs: [
+                        .init(question: "What is BootstrapUI?", answer: "BootstrapUI is a comprehensive SwiftUI component library following Atomic Design principles."),
+                        .init(question: "Is it free to use?", answer: "Yes, BootstrapUI is open source and free to use in your projects."),
+                        .init(question: "How do I get started?", answer: "Simply add BootstrapUI as a Swift Package dependency and import it.")
+                    ])
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSAccordion")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Bottom Sheet Showcase
+
+struct BottomSheetShowcaseView: View {
+    @State private var showSheet = false
+    @State private var showActionSheet = false
+    @State private var showConfirmation = false
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Basic Bottom Sheet") {
+                    BSButton("Show Bottom Sheet", style: .primary) {
+                        showSheet = true
+                    }
+                }
+
+                ShowcaseSection(title: "Action Sheet") {
+                    BSButton("Show Action Sheet", style: .outline) {
+                        showActionSheet = true
+                    }
+                }
+
+                ShowcaseSection(title: "Confirmation Sheet") {
+                    BSButton("Show Confirmation", style: .destructive) {
+                        showConfirmation = true
+                    }
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSBottomSheet")
+        .navigationBarTitleDisplayMode(.inline)
+        .bsBottomSheet(isPresented: $showSheet, title: "Options") {
+            VStack(spacing: theme.md) {
+                BSText("This is a bottom sheet with custom content.")
+                BSButton("Close", style: .primary) {
+                    showSheet = false
+                }
+            }
+            .padding()
+        }
+        .bsActionSheet(
+            isPresented: $showActionSheet,
+            title: "Choose Action",
+            message: "Select one of the options below",
+            actions: [
+                .init(title: "Take Photo", icon: "camera.fill") {},
+                .init(title: "Choose from Library", icon: "photo.fill") {},
+                .init(title: "Delete", icon: "trash.fill", style: .destructive) {}
+            ],
+            cancelAction: .init(title: "Cancel", style: .cancel) {}
+        )
+        .bsConfirmationSheet(
+            isPresented: $showConfirmation,
+            title: "Delete Item?",
+            message: "This action cannot be undone.",
+            confirmTitle: "Delete",
+            isDestructive: true,
+            onConfirm: {
+                BSToastManager.shared.success("Item deleted")
+            }
+        )
+    }
+}
+
+// MARK: - Carousel Showcase
+
+struct CarouselShowcaseView: View {
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Banner Carousel") {
+                    BSBannerCarousel(banners: [
+                        .init(title: "Summer Sale", subtitle: "Up to 50% off", buttonTitle: "Shop Now", backgroundColor: .blue),
+                        .init(title: "New Arrivals", subtitle: "Check out the latest", buttonTitle: "Explore", backgroundColor: .purple),
+                        .init(title: "Free Shipping", subtitle: "On orders over $50", backgroundColor: .green)
+                    ])
+                }
+
+                ShowcaseSection(title: "Image Carousel") {
+                    BSImageCarousel(images: [
+                        .init(systemImage: "photo.fill", caption: "Photo 1"),
+                        .init(systemImage: "photo.fill.on.rectangle.fill", caption: "Photo 2"),
+                        .init(systemImage: "person.crop.rectangle.fill", caption: "Photo 3")
+                    ])
+                    .frame(height: 200)
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSCarousel")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Timeline Showcase
+
+struct TimelineShowcaseView: View {
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Order Timeline") {
+                    BSOrderTimeline(steps: [
+                        .init(title: "Order Placed", subtitle: "Confirmed", time: "Dec 1, 10:30 AM", status: .completed),
+                        .init(title: "Processing", subtitle: "Preparing items", time: "Dec 1, 2:00 PM", status: .completed),
+                        .init(title: "Shipped", subtitle: "On the way", time: "Dec 2, 9:00 AM", status: .current),
+                        .init(title: "Delivered", status: .pending)
+                    ])
+                }
+
+                ShowcaseSection(title: "Activity Timeline") {
+                    BSActivityTimeline(activities: [
+                        .init(title: "John commented", description: "Great work!", time: "2m ago", icon: "bubble.left.fill", iconColor: .blue),
+                        .init(title: "Sarah liked", time: "5m ago", icon: "heart.fill", iconColor: .red),
+                        .init(title: "New follower", description: "Mike followed you", time: "10m ago", icon: "person.fill", iconColor: .green)
+                    ])
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSTimeline")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Empty State Showcase
+
+struct EmptyStateShowcaseView: View {
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "No Results") {
+                    BSEmptyState.noResults(searchTerm: "SwiftUI")
+                }
+
+                ShowcaseSection(title: "No Connection") {
+                    BSEmptyState.noConnection {}
+                }
+
+                ShowcaseSection(title: "Empty Cart") {
+                    BSEmptyState.emptyCart {}
+                }
+
+                ShowcaseSection(title: "Error View") {
+                    BSErrorView(title: "Something went wrong") {
+                        BSToastManager.shared.info("Retrying...")
+                    }
+                }
+
+                ShowcaseSection(title: "Coming Soon") {
+                    BSEmptyState.comingSoon(feature: "This feature")
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSEmptyState")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Progress Bar Showcase
+
+struct ProgressBarShowcaseView: View {
+    @State private var progress: Double = 0.65
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.xl) {
+                ShowcaseSection(title: "Basic Progress") {
+                    BSProgressBar(progress: progress, showLabel: true)
+                }
+
+                ShowcaseSection(title: "Gradient Progress") {
+                    BSProgressBar(
+                        progress: progress,
+                        style: .gradient([.blue, .purple, .pink]),
+                        showLabel: true
+                    )
+                }
+
+                ShowcaseSection(title: "Striped Progress") {
+                    BSProgressBar(progress: progress, style: .striped)
+                }
+
+                ShowcaseSection(title: "Indeterminate") {
+                    BSIndeterminateProgress()
+                }
+
+                ShowcaseSection(title: "Step Progress") {
+                    BSStepProgress(completedSteps: 3, totalSteps: 5)
+                }
+
+                ShowcaseSection(title: "Circular Progress") {
+                    HStack(spacing: theme.xl) {
+                        BSCircularProgress(progress: 0.75)
+                            .frame(width: 80, height: 80)
+                        BSCircularProgress(progress: 0.45, color: .orange)
+                            .frame(width: 80, height: 80)
+                    }
+                }
+
+                ShowcaseSection(title: "Loading Spinners") {
+                    HStack(spacing: theme.xl) {
+                        BSLoadingSpinner(style: .circular)
+                        BSLoadingSpinner(style: .dots)
+                        BSLoadingSpinner(style: .pulse)
+                        BSLoadingSpinner(style: .bars)
+                    }
+                }
+
+                ShowcaseSection(title: "Adjust Progress") {
+                    BSSlider(value: $progress, showValue: true)
+                }
+            }
+            .padding(theme.md)
+        }
+        .background(theme.background)
+        .navigationTitle("BSProgressBar")
+        .navigationBarTitleDisplayMode(.inline)
+    }
 }
 
 #Preview {
